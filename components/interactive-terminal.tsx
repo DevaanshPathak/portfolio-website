@@ -117,7 +117,8 @@ export function InteractiveTerminal() {
   pwd                  Show current directory
   date                 Show current date/time
   uptime               Show portfolio uptime
-  neofetch             Show system information
+  neofetch             Show system information (simple)
+  fastfetch            Show detailed system info with logo
 
 🛠️  Utilities:
   echo [text]          Display text
@@ -193,7 +194,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
 
       case "neofetch":
         const neofetch = `
-┌───────��─────────────────────────────┐
+┌─────────────────────────────────────┐
 │  ${siteConfig.name.padEnd(35)} │
 ├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
@@ -210,7 +211,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
         const hostName = config?.host || 'portfolio'
         const username = siteConfig.name.toLowerCase().replace(' ', '')
         const fastfetch = `        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        ${username}@${hostName}
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ${'─'.repeat(username.length + hostName.length + 1)}
+      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ${'��'.repeat(username.length + hostName.length + 1)}
     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    OS: ${config?.os || 'Portfolio OS'}
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Host: ${config?.host || 'devaansh-dev'}
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Kernel: ${config?.kernel || 'Node.js 20.x'}
