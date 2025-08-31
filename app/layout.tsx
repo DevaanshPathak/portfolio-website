@@ -7,6 +7,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { siteConfig } from "@/lib/config"
+import ClipboardPatch from "@/components/ClipboardPatch"
 
 const geistSans = Manrope({
   subsets: ["latin"],
