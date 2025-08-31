@@ -169,7 +169,7 @@ export function InteractiveTerminal() {
         const neofetch = `
 ┌─────────────────────────────────────┐
 │  ${siteConfig.name.padEnd(35)} │
-├─────────────────────────────────────┤
+├───────────────���─────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
 │ 🌍 Location: ${siteConfig.location?.padEnd(21) || "Unknown".padEnd(21)} │
 │ 🚀 Tech: Python, FastAPI, Django   │
@@ -229,6 +229,27 @@ export function InteractiveTerminal() {
           setInput(history[newIndex])
         }
       }
+    } else if (e.key === "Tab") {
+      e.preventDefault()
+      // Simple tab completion for commands and files
+      const commands = ["help", "clear", "ls", "pwd", "whoami", "cat", "wget", "echo", "date", "uptime", "neofetch", "exit"]
+      const files = Object.keys(FILES)
+      const allOptions = [...commands, ...files]
+
+      const matches = allOptions.filter(option => option.startsWith(input.toLowerCase()))
+      if (matches.length === 1) {
+        setInput(matches[0])
+      } else if (matches.length > 1) {
+        const newLines: TerminalLine[] = [
+          { type: "command", content: `$ ${input}` },
+          { type: "output", content: matches.join("  ") }
+        ]
+        setLines(prev => [...prev, ...newLines])
+      }
+    } else if (e.key === "l" && e.ctrlKey) {
+      e.preventDefault()
+      setLines([])
+      setInput("")
     }
   }
 
