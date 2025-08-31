@@ -193,7 +193,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
 
       case "neofetch":
         const neofetch = `
-┌─────────────────────────────────────┐
+┌───────��─────────────────────────────┐
 │  ${siteConfig.name.padEnd(35)} │
 ├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
@@ -207,41 +207,32 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
 
       case "fastfetch":
         const config = siteConfig.fastfetch
-        const fastfetch = `                   -/+oossssoo+/-                      ${siteConfig.name}@${config?.host || 'portfolio'}
-                \`:+ssssssssssssssss+:\`                   ${'─'.repeat(siteConfig.name.length + (config?.host?.length || 9) + 1)}
-              -+ssssssssssssssssssss+-                 OS: ${config?.os || 'Portfolio OS'}
-            -+ssssssssssssssssssssssss+-               Host: ${config?.host || 'devaansh-dev'}
-          -+sssssssssssssssssssssssssss+-             Kernel: ${config?.kernel || 'Node.js 20.x'}
-        -+sssssssssssssssssssssssssssss+-           Uptime: ${config?.uptime || 'Always Online'}
-      \`-+sssssssssssssssssssssssssssss+-\`         Packages: ${config?.packages || 'npm (1337 packages)'}
-     ./+sssssssssssssssssssssssssssss+/.          Shell: ${config?.shell || 'bash 5.1.8'}
-    ./+sssssssssssssssssssssssssssss+/.           Resolution: ${config?.resolution || 'Responsive'}
-   ./+sssssssssssssssssssssssssssss+/.            Theme: ${config?.theme || 'Dark/Light Auto'}
-  \`/+sssssssssssssssssssssssssssss+/\`             Icons: ${config?.icons || 'Lucide React'}
-  /+sssssssssssssssssssssssssssss+/               Terminal: ${config?.terminal || 'Interactive Web Terminal'}
- \`+sssssssssssssssssssssssssssss+\`                CPU: ${config?.cpu || 'Python Engine'}
- /sssssssssssssssssssssssssssss/                 GPU: ${config?.gpu || 'CSS Animations'}
-.+ssssssssssssssssssssssssssss+.                Memory: ${config?.memory || 'Optimized for Performance'}
-+sssssssssssssssssssssssssssss+                 Disk (/): ${config?.disk || 'Cloud Storage'}
-+sssssssssssssssssssssssssssss+                 Local IP: ${config?.localip || '127.0.0.1'}
-+sssssssssssssssssssssssssssss+                 Public IP: ${config?.publicip || 'Fly.dev'}
-+sssssssssssssssssssssssssssss+                 Battery: ${config?.battery || 'Powered by Coffee ☕'}
-+sssssssssssssssssssssssssssss+                 Locale: ${config?.locale || 'en_US.UTF-8'}
-.+ssssssssssssssssssssssssssss+.
- /sssssssssssssssssssssssssssss/                 ████ ████ ████ ████ ████ ████ ████ ████
- \`+sssssssssssssssssssssssssssss+\`                ████ ████ ████ ████ ████ ████ ████ ████
-  /+sssssssssssssssssssssssssssss+/
-  \`/+sssssssssssssssssssssssssssss+/\`
-   ./+sssssssssssssssssssssssssssss+/.
-    ./+sssssssssssssssssssssssssssss+/.
-     ./+sssssssssssssssssssssssssssss+/.
-      \`-+sssssssssssssssssssssssssssss+-\`
-        -+sssssssssssssssssssssssssssss+-
-          -+ssssssssssssssssssssssssss+-
-            -+ssssssssssssssssssssss+-
-              -+ssssssssssssssssss+-
-                \`:+ssssssssssssss+:\`
-                   -/+oossssoo+/-`
+        const hostName = config?.host || 'portfolio'
+        const username = siteConfig.name.toLowerCase().replace(' ', '')
+        const fastfetch = `        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        ${username}@${hostName}
+      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ${'─'.repeat(username.length + hostName.length + 1)}
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    OS: ${config?.os || 'Portfolio OS'}
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Host: ${config?.host || 'devaansh-dev'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Kernel: ${config?.kernel || 'Node.js 20.x'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Uptime: ${config?.uptime || 'Always Online'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Packages: ${config?.packages || 'npm (1337 packages)'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Shell: ${config?.shell || 'bash 5.1.8'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Resolution: ${config?.resolution || 'Responsive'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@DE: ${config?.theme || 'Dark/Light Auto'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@WM: ${config?.icons || 'Lucide React'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Terminal: ${config?.terminal || 'Interactive Web Terminal'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@CPU: ${config?.cpu || 'Python Engine'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPU: ${config?.gpu || 'CSS Animations'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Memory: ${config?.memory || 'Optimized for Performance'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Disk (/): ${config?.disk || 'Cloud Storage'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Local IP: ${config?.localip || '127.0.0.1'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Public IP: ${config?.publicip || 'Fly.dev'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Battery: ${config?.battery || 'Powered by Coffee ☕'}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Locale: ${config?.locale || 'en_US.UTF-8'}
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ████ ████ ████ ████ ████ ████ ████ ████
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        ████ ████ ████ ████ ████ ████ ████ ████`
         newLines.push({ type: "output", content: fastfetch })
         break
 
