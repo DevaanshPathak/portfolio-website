@@ -169,7 +169,7 @@ export function InteractiveTerminal() {
         const neofetch = `
 ┌─────────────────────────────────────┐
 │  ${siteConfig.name.padEnd(35)} │
-├───────────────���─────────────────────┤
+├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
 │ 🌍 Location: ${siteConfig.location?.padEnd(21) || "Unknown".padEnd(21)} │
 │ 🚀 Tech: Python, FastAPI, Django   │
@@ -306,9 +306,18 @@ export function InteractiveTerminal() {
           </div>
         </div>
         
-        <p className="mt-3 text-sm text-muted-foreground">
-          Try commands like: <code className="font-mono bg-muted px-1 rounded">cat projects.txt</code>, <code className="font-mono bg-muted px-1 rounded">wget resume.pdf</code>, or <code className="font-mono bg-muted px-1 rounded">help</code>
-        </p>
+        <div className="mt-3 text-sm text-muted-foreground space-y-1">
+          <p>
+            Try commands: <code className="font-mono bg-muted px-1 rounded">cat projects.txt</code>,
+            <code className="font-mono bg-muted px-1 rounded ml-1">wget resume.pdf</code>,
+            <code className="font-mono bg-muted px-1 rounded ml-1">neofetch</code>
+          </p>
+          <p className="text-xs">
+            💡 Use <kbd className="font-mono bg-muted px-1 rounded text-xs">Tab</kbd> for completion,
+            <kbd className="font-mono bg-muted px-1 rounded text-xs">↑↓</kbd> for history,
+            <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+L</kbd> to clear
+          </p>
+        </div>
       </div>
     </section>
   )
