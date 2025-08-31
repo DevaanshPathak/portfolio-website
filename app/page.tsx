@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/hero-section"
+import { InteractiveTerminal } from "@/components/interactive-terminal"
 import ProjectsPinned from "@/components/projects-pinned"
 import { Projects } from "@/components/projects"
 import { Skills } from "@/components/skills"
@@ -11,8 +12,9 @@ import { siteConfig } from "@/lib/config"
 
 export default function Page() {
   return (
-    <main className="font-sans">
+    <main className="font-sans" suppressHydrationWarning>
       <HeroSection />
+      <InteractiveTerminal />
       {Array.isArray(siteConfig.pinnedRepos) && siteConfig.pinnedRepos.length > 0 ? <ProjectsPinned /> : <Projects />}
       <ActivitySnapshot />
       <CourseworkAchievements />

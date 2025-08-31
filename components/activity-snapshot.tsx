@@ -21,7 +21,7 @@ async function ActivitySnapshot() {
 
   if (!res.ok) {
     return (
-      <section id="activity" className="mx-auto mt-12 max-w-5xl px-6">
+      <section id="activity" className="mx-auto mt-12 max-w-5xl px-6" suppressHydrationWarning>
         <h2 className="text-2xl font-semibold">Recent Activity</h2>
         <p className="mt-2 text-muted-foreground">
           Unable to load GitHub activity now (status {res.status}). This may be due to rate limits. Try again later.
@@ -34,7 +34,7 @@ async function ActivitySnapshot() {
   const pushes = events.filter((e) => e.type === "PushEvent").slice(0, 5)
 
   return (
-    <section id="activity" className="mx-auto mt-12 max-w-5xl px-6">
+    <section id="activity" className="mx-auto mt-12 max-w-5xl px-6" suppressHydrationWarning>
       <h2 className="text-2xl font-semibold">Recent Activity</h2>
       {pushes.length === 0 ? (
         <p className="mt-2 text-muted-foreground">No recent push events found.</p>
@@ -43,7 +43,14 @@ async function ActivitySnapshot() {
           {pushes.map((e, i) => (
             <li key={i} className="rounded-md border p-3">
               <div className="text-sm text-muted-foreground">
-                {e.created_at ? new Date(e.created_at).toLocaleString() : ""}
+                {e.created_at ? new Date(e.created_at).toLocaleString('en-US', {
+                  timeZone: 'UTC',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }) : ""}
               </div>
               <div className="font-medium">{e.repo?.name}</div>
               <ul className="mt-1 list-disc pl-5 text-sm">

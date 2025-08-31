@@ -1,3 +1,13 @@
+export type EducationItem = {
+  institution: string
+  degree: string
+  start: string
+  end?: string
+  description?: string
+  status?: "Completed" | "In Progress" | "Deferred"
+  highlights?: string[]
+}
+
 export const siteConfig = {
   name: "Devaansh Pathak",
   role: "Python Developer",
@@ -38,6 +48,30 @@ export const siteConfig = {
     // { title: "Hackathon Winner", event: "XYZ Hack 2024", date: "2024", details: "Built a FastAPI service..." },
     // { title: "Open-source Contributor", event: "GitHub", date: "2024", details: "Contributed to ..." },
   ],
+
+  education: [] as EducationItem[],
+
+  // Fastfetch profile configuration
+  fastfetch: {
+    os: "Portfolio OS",
+    host: "devaansh-dev",
+    kernel: "Node.js 20.x",
+    uptime: "Always Online",
+    packages: "npm (1337 packages)",
+    shell: "bash 5.1.8",
+    resolution: "Responsive",
+    theme: "Dark/Light Auto",
+    icons: "Lucide React",
+    terminal: "Interactive Web Terminal",
+    cpu: "Python Engine",
+    gpu: "CSS Animations",
+    memory: "Optimized for Performance",
+    disk: "Cloud Storage",
+    localip: "127.0.0.1",
+    publicip: "Fly.dev",
+    battery: "Powered by Coffee ☕",
+    locale: "en_US.UTF-8"
+  },
 
   seo: {
     url: "https://your-domain.com",

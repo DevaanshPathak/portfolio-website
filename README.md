@@ -1,277 +1,311 @@
-# Student Portfolio (Python Developer) — Documentation
+# Devaansh Pathak - Portfolio Website
 
-A personal portfolio optimized for applications (e.g., Scaler School of Technology), featuring:
-- A 3D, programmer-themed hero with an interactive keyboard and a live terminal on a 3D monitor
-- Featured (pinned) GitHub repositories and/or auto-fetched repos
-- Optional certificates section
-- Light/dark theming with a toggle
+A modern, programmer-themed portfolio website showcasing Python development skills and projects. Built with Next.js and featuring a fully interactive terminal, Git-style timeline, and optional 3D elements.
 
-This document explains what each file does and which code powers each section.
+🌐 **Live Site**: [View Portfolio](https://your-domain.com)
 
-## Tech Stack
-- Next.js App Router (React Server Components where possible)
-- Tailwind CSS v4 + shadcn/ui base styles
-- React Three Fiber + drei for 3D
-- next-themes for light/dark mode
-- TypeScript
+## ✨ Features
 
-## Page Composition
-- app/page.tsx
-  - Imports and renders the main sections in order:
-    - <HeroSection /> — Wrapper that chooses between the 3D scene (Hero3D) and a static fallback based on user preference and reduced-motion.
-    - Featured Projects or Projects (auto) — Conditional:
-      - If siteConfig.pinnedRepos has links → <ProjectsPinned />
-      - Else → <Projects /> (auto GitHub fetch)
-    - <ActivitySnapshot />, <CourseworkAchievements />, <Skills />, <Education />, <Certificates />, <Contact />
-  - Appends a simple footer.
+### 🖥️ Interactive Terminal
+- **Real Commands**: `fastfetch`, `cat projects.txt`, `wget resume.pdf`, `neofetch`, `ls`, `pwd`, etc.
+- **GitHub ASCII Art**: Beautiful fastfetch display with system information
+- **Tab Completion**: Auto-complete commands and filenames
+- **Command History**: Navigate with ↑/↓ arrows
+- **Window Controls**: Close (🔴), minimize (🟡), maximize (🟢), and resize
+- **Keyboard Shortcuts**: `Ctrl+L` (clear), `Ctrl+M` (minimize), `Esc` (exit fullscreen)
 
-## Layout, Providers, Theming
-- app/layout.tsx
-  - Loads fonts (Geist Sans/Mono + Manrope) and globals.css.
-  - Wraps the app in <ThemeProvider /> (from components/theme-provider.tsx).
-  - Places <ThemeToggle /> in the top-right (fixed) so users can switch light/dark modes.
-  - Suspense boundary for streaming and @vercel/analytics injection.
+### 🎨 Programmer-Themed Design
+- **Terminal Hero**: Interactive terminal window with command-line interface
+- **CLI-Style Buttons**: Monospace font buttons with backdrop blur effects
+- **Grid Background**: Code-editor-inspired background with subtle scanlines
+- **Git Timeline**: Education section styled as `git log --oneline` output
+- **Code Aesthetics**: Monospace fonts, terminal colors, developer-friendly UI
 
-- components/theme-provider.tsx
-  - Thin wrapper around next-themes ThemeProvider. Controls theme attribute/class on the html root.
+### 🚀 Interactive Elements
+- **3D Scene**: Optional Three.js keyboard and monitor (toggle-able)
+- **Dark/Light Mode**: Seamless theme switching with programmer-friendly colors
+- **Live GitHub Activity**: Real-time commit feed from GitHub API
+- **Responsive Design**: Mobile-first approach with smooth animations
+- **Resizable Terminal**: Drag corners to resize, just like a real application
 
-- components/theme-toggle.tsx
-  - Client component that uses useTheme() from next-themes.
-  - Handles initial mount to avoid hydration flashes.
-  - Toggles theme between "light" and "dark". Uses lucide-react icons and shadcn/ui Button.
+### 📊 Dynamic Content
+- **Featured Projects**: Automatic GitHub repository cards with languages and stars
+- **Recent Activity**: Live GitHub commit timeline with formatted dates
+- **Skills Showcase**: Technology badges and competencies
+- **Education Timeline**: Git-style commit history for educational background
 
-- app/globals.css
-  - Tailwind v4 base + tokens: CSS custom properties for background, foreground, primary, secondary, border, ring, etc., with light and dark values.
-  - @theme inline maps CSS variables into Tailwind design tokens.
-  - Base layer applies semantic classes for body and sets heading font-family.
+## 🛠️ Tech Stack
 
-## Configuration (Your Details)
-- lib/config.ts (siteConfig)
-  - name, role, summary, location — used by the overlay in the hero and elsewhere.
-  - githubUsername — used by <Projects /> auto-fetch (optional).
-  - pinnedRepos — array of GitHub URLs (or objects) for “Featured Projects” via <ProjectsPinned />. Add more links to show more cards.
-  - certificates — optional list of course/certificate entries. If empty, the Certificates section displays guidance (or can be hidden by leaving it empty).
-  - links — GitHub, LinkedIn, email mailto link, resume path.
+- **Framework**: Next.js 15 (App Router, React Server Components)
+- **Styling**: Tailwind CSS v4 + shadcn/ui components
+- **3D Graphics**: React Three Fiber + drei (optional)
+- **Theme**: next-themes for dark/light mode
+- **Language**: TypeScript
+- **Deployment**: Vercel-ready
 
-Update siteConfig to personalize all visible copy and links.
+## 🚀 Quick Start
 
-## 3D Hero — components/hero-3d.tsx
-This file contains the full-screen 3D scene and the always-on HTML overlay.
+1. **Clone and Install**
+   ```bash
+   git clone https://github.com/DevaanshPathak/portfolio-website.git
+   cd portfolio-website
+   npm install
+   ```
 
-- High-level component: export function Hero3D()
-  - Renders a full-viewport <Canvas> (R3F) with:
-    - Lights (ambient+directional)
-    - Suspense boundary
-    - The scene group:
-      - <Monitor3D text={typed} /> — 3D monitor with a terminal screen driven by a texture
-      - <Keyboard3D onAppend={append} onBackspace={backspace} /> — Interactive keyboard
-      - Ambient effects: <Particles />, <NeonGrid />, <CodeRain />
-    - <OrbitControls /> for gentle rotation (zoom/pan disabled)
-  - Always-visible HTML overlay (outside Canvas) for:
-    - Your name: siteConfig.name
-    - Role: siteConfig.role
-    - Summary: siteConfig.summary (hidden on small screens for readability)
-    - CTAs (View GitHub, Download Resume, Contact Me) using siteConfig.links
+2. **Configure Your Details**
+   ```bash
+   # Edit lib/config.ts with your information
+   vim lib/config.ts
+   ```
 
-- Input handling and state:
-  - typed (string) — live text displayed on the 3D monitor terminal.
-  - append(s) and backspace() — handlers bound to keyboard interactions:
-    - Clicking 3D keys or pressing your physical keys updates typed text.
-  - Responsive tweaks: mobile detection reduces particle/rain density.
+3. **Add Your Resume**
+   ```bash
+   # Place your resume at public/resume.pdf
+   cp your-resume.pdf public/resume.pdf
+   ```
 
-- Keyboard internals:
-  - rows (constant) — Key layout definition: each row is an array of { label, w? } where w sets the key width (e.g., SHIFT, ENTER, SPACE are wider).
-  - <Keyboard3D />
-    - Computes positions for each key in a grid (useMemo).
-    - Renders each key via <KeyCap /> with:
-      - boxGeometry for top and bezel
-      - meshStandardMaterial with theme-aware colors and subtle emissive glow on hover/press
-      - Pointer events: onPress/onRelease to animate and update text
-    - Group transform controls keyboard placement/orientation:
-      - position={[0, -0.75, 0.5]}
-      - rotation={[...]} — X-tilt controls “laptop stand” angle (front edge slightly lower, top row slightly higher)
-      - scale — overall size
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   # Open http://localhost:3000
+   ```
 
-  - <KeyCap />
-    - Animates press depth and hover scale with useFrame.
-    - Renders the key label with <DreiText> (font="/fonts/GeistMono-Regular.ttf").
-    - Uses theme-aware colors for top/base/border/accent.
+## ⚙️ Configuration
 
-- Terminal monitor internals:
-  - <Monitor3D />
-    - Builds a simple monitor: frame, screen plane (with a map), stand, and base.
-    - Receives text and passes it to useTerminalTexture to generate a live CanvasTexture.
+### Personal Information (`lib/config.ts`)
 
-  - useTerminalTexture(text)
-    - Creates an offscreen HTMLCanvasElement and THREE.CanvasTexture.
-    - Clears background, renders neon-green text in a monospace font with basic line wrapping.
-    - Draws a blinking “cursor” rectangle at the end of the last line.
-    - Updates texture on each text/theme change (texture.needsUpdate = true).
+```typescript
+export const siteConfig = {
+  name: "Your Name",
+  role: "Your Role", 
+  summary: "Your professional summary...",
+  githubUsername: "your-github-username",
+  
+  // Featured repositories (optional)
+  pinnedRepos: [
+    "https://github.com/username/repo-name",
+    { 
+      url: "https://github.com/username/special-repo", 
+      label: "Custom Name",
+      description: "Custom description"
+    }
+  ],
+  
+  // Education entries for Git-style timeline
+  education: [
+    {
+      institution: "University Name",
+      degree: "Degree Name", 
+      start: "2020",
+      end: "2024",
+      status: "Completed",
+      description: "Brief description...",
+      highlights: ["Achievement 1", "Achievement 2"]
+    }
+  ],
 
-- Ambient effects:
-  - <Particles />
-    - Generates a spherical cloud of points from random positions and slowly rotates them.
-    - count and color adapt to theme and mobile/desktop.
+  // Fastfetch terminal display configuration
+  fastfetch: {
+    os: "Portfolio OS",
+    host: "your-hostname",
+    kernel: "Node.js 20.x",
+    uptime: "Always Online",
+    packages: "npm (1337 packages)",
+    shell: "bash 5.1.8",
+    resolution: "Responsive", 
+    theme: "Dark/Light Auto",
+    icons: "Lucide React",
+    terminal: "Interactive Web Terminal",
+    cpu: "Python Engine",
+    gpu: "CSS Animations",
+    memory: "Optimized for Performance",
+    disk: "Cloud Storage",
+    battery: "Powered by Coffee ☕"
+  },
+  
+  links: {
+    github: "https://github.com/username",
+    linkedin: "https://linkedin.com/in/username", 
+    email: "mailto:your-email@example.com",
+    resume: "/resume.pdf"
+  }
+}
+```
 
-  - <NeonGrid />
-    - Floor grid using drei’s <Grid> with theme-aware primary/secondary colors.
-    - Positioned below the scene and rotated to lay flat.
+### Environment Variables (Optional)
 
-  - <CodeRain />
-    - Instanced falling “code streaks” (instancedMesh of thin boxes) with randomized speeds/lengths.
-    - Constantly updates instance matrices in useFrame for performance.
+Create `.env.local` for higher GitHub API limits:
 
-- OrbitControls
-  - Smooth, bounded rotation around the scene.
-  - enableZoom={false}, enablePan={false}, with damping and polarAngle limits.
+```bash
+GITHUB_TOKEN=your_github_personal_access_token
+```
 
-- HTML overlay (always visible)
-  - Positioned absolutely over the Canvas (z-index above Canvas, pointer-events handled so buttons remain clickable).
-  - Pulls text and links from siteConfig.
+## 📁 Project Structure
 
-## Projects Sections
-- components/projects-pinned.tsx (Featured Projects)
-  - Reads siteConfig.pinnedRepos:
-    - Each entry can be a URL string or an object { url, label?, description? }.
-  - parseRepoUrl(url) — extracts { owner, repo } if the URL is a GitHub repo.
-  - fetchRepo(owner, repo) — fetches repo metadata from GitHub (revalidate hourly).
-  - For GitHub URLs: merges metadata (name, description, stars, language, topics) with optional overrides (label/description).
-  - For non-GitHub links: renders a generic “Custom link” card using the provided URL.
-  - Renders a responsive grid of <Card>s: title → GitHub link, description, language, stars, topics.
+```
+├── app/
+│   ├── layout.tsx          # Root layout with theme provider
+│   ├── page.tsx           # Main page composition
+│   └── globals.css        # Global styles and CSS variables
+├── components/
+│   ├── ui/                # shadcn/ui base components
+│   ├── hero-section.tsx   # Terminal hero with 3D toggle
+│   ├── hero-fallback.tsx  # Terminal window fallback
+│   ├── hero-3d.tsx        # Interactive 3D scene
+│   ├── interactive-terminal.tsx # Full terminal implementation
+│   ├── education.tsx      # Git-style education timeline
+│   ├── projects-pinned.tsx # Featured project cards
+│   ├── activity-snapshot.tsx # GitHub activity feed
+│   └── ...               # Other components
+├── lib/
+│   ├── config.ts          # Site configuration
+│   └── utils.ts           # Utility functions
+└── public/
+    └── resume.pdf         # Your resume file
+```
 
-- components/projects.tsx (Auto Projects)
-  - getRepos(username) — fetches a user’s repos from GitHub with basic headers and revalidate=60.
-    - Sorts by stars and shows top 6.
-  - Projects() — server component that:
-    - Uses siteConfig.githubUsername; if missing or rate-limited, shows an informative empty state.
-    - Otherwise, renders a responsive grid of RepoCard.
+## 🖥️ Terminal Commands
 
-## Certificates Section
-- components/certificates.tsx
-  - Reads siteConfig.certificates (array). If empty/missing: shows a helpful message and how to add entries.
-  - For each certificate:
-    - Card header: title, issuer, optional date
-    - Optional image (if provided)
-    - Optional skills (rendered as small tags)
-    - Optional credential URL (link is hidden if not provided)
-  - Grid layout is responsive and accessible.
+The interactive terminal supports these commands:
 
-## Design Tokens and Typography
-- Color system (3–5 core colors observed in globals.css):
-  - Primary cyan-teal (brand), rose accent, and neutral slate/white variants.
-  - Tokens defined for both light and dark modes (semantic variables).
-- Fonts:
-  - Manrope for body via --font-manrope mapped to Tailwind font-sans.
-  - Geist Sans/Mono available for headings and code aesthetics.
-- Layout:
-  - Mobile-first with generous spacing and consistent max-widths (max-w-5xl containers).
-  - Uses flex/grid utility classes and semantic sections/headings.
+### 📁 File Operations
+- `ls` - List files and directories
+- `cat [file]` - Display file contents (`projects.txt`, `skills.txt`, `about.txt`, `contact.txt`, `.env`)
+- `wget [file]` - Download files (`wget resume.pdf` actually downloads your resume)
 
-## Customization Guide
-- Update lib/config.ts
-  - Set name, role, summary, and links.
-  - Add pinnedRepos with your GitHub repo URLs to show “Featured Projects.”
-  - Set githubUsername to enable the automatic Projects fallback.
-  - Add coursework and achievements entries if you want those sections populated.
-  - Certificates are optional; leave empty to hide the grid and show guidance.
+### ℹ️ System Information  
+- `whoami` - Show current user
+- `pwd` - Show current directory
+- `date` - Show current date/time
+- `uptime` - Show portfolio uptime
+- `neofetch` - Simple system information
+- `fastfetch` - Detailed system info with GitHub ASCII logo
 
-- public/resume.pdf
-  - Place your resume at /public/resume.pdf and ensure siteConfig.links.resume points to it.
+### 🛠️ Utilities
+- `echo [text]` - Display text
+- `clear` - Clear terminal screen  
+- `help` - Show all available commands
+- `exit` - Exit message
 
-## Deploying to Vercel
+### ⌨️ Shortcuts & Controls
+- **Tab** - Auto-complete commands and files
+- **↑/↓** - Browse command history
+- **Ctrl+L** - Clear screen
+- **Ctrl+M** - Minimize/restore terminal
+- **Esc** - Exit fullscreen mode
 
-Option A — Deploy from this v0 project:
-- Click Publish in the top-right (in v0). It will deploy to Vercel automatically.
+### 🖱️ Window Controls
+- **🔴 Red Button** - Close terminal
+- **🟡 Yellow Button** - Minimize/restore
+- **🟢 Green Button** - Maximize/restore  
+- **Bottom-right corner** - Resize terminal
 
-Option B — GitHub + Vercel dashboard:
-- Push your code to a GitHub repository.
-- In Vercel, click “New Project” → Import your repo.
-- Settings:
-  - Framework: Next.js
-  - Build Command: next build (default)
-  - Output Directory: .next (default)
-  - Node version: 20.x (Project Settings → General → Node.js Version)
-- Environment Variables (optional):
-  - GITHUB_TOKEN: If you have rate limits fetching repo metadata, add a Personal Access Token (classic with public_repo scope is enough). Not required, but reduces API throttling.
-- Click Deploy.
+## 🎨 Design System
 
-After deploy:
-- Verify the homepage shows the 3D hero (toggle “3D” ON if you turned it off before).
-- Check the Featured Projects and Activity Snapshot render (watch for API rate limits).
+### Color Palette
+- **Primary**: Cyan-teal (#164e63) - brand color
+- **Secondary**: Rose (#be123c) - accent color  
+- **Background**: Dynamic light/dark with subtle grid patterns
+- **Terminal**: Emerald green text on dark background
+- **Accent**: GitHub-style colors for authenticity
 
-## Production 3D Hero Checklist (if it doesn’t render)
+### Typography
+- **Body**: Manrope (clean, modern sans-serif)
+- **Code/Terminal**: Geist Mono (monospace for CLI elements)  
+- **Buttons**: Monospace styling for programmer aesthetic
+- **Terminal**: Authentic terminal font styling
 
-- Dynamic import:
-  - In components/hero-section.tsx, ensure Hero3D is loaded via:
-    - dynamic(() => import("./hero-3d"), { ssr: false, loading: () => <HeroFallback /> })
-- Client-only logic:
-  - components/hero-3d.tsx should be a Client Component ("use client") and avoid window/document at module scope.
-- Mounted guard:
-  - HeroSection should decide between 3D vs fallback after client mount to avoid SSR hydration mismatch.
-- Preference + reduced motion:
-  - The 3D toggle should default ON unless the user prefers reduced motion or previously turned it off (stored in localStorage).
-- Layout:
-  - The hero wrapper should be relative w-full h-screen. The Canvas should be absolute inset-0, with the HTML overlay at a higher z-index above it.
+### Components
+- **Buttons**: CLI-styled with backdrop blur and monospace font
+- **Cards**: Subtle borders with programmer-friendly hover effects
+- **Timeline**: Git commit-style layout with hashes and branch indicators
+- **Terminal**: Fully interactive with real terminal UX
 
-## Troubleshooting (Local)
+## 🚢 Deployment
 
-- Install conflicts or peer dependency errors:
-  - Ensure Node 20 and npm 10+.
-  - Do a clean install: delete node_modules and package-lock.json, then npm install.
-  - Confirm package.json uses:
-    - next ^15, react ^19, react-dom ^19
-    - @react-three/fiber ^9, @react-three/drei ^9, three ^0.169
-    - tailwindcss ^4, next-themes ^0.3, swr ^2
+### Deploy to Vercel (Recommended)
 
-- GitHub API rate limits:
-  - Add GITHUB_TOKEN in a .env.local for local dev and in Vercel Project Settings for production.
-  - The site gracefully falls back to messaging when rate-limited.
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Initial commit"
+   git push origin main
+   ```
 
-- 3D hero performance:
-  - Use the 3D toggle to disable heavy effects on low-end devices.
-  - The hero respects prefers-reduced-motion automatically.
+2. **Connect to Vercel**
+   - Visit [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Deploy with default settings
 
-## Version Snapshot (package.json)
+3. **Add Environment Variables** (Optional)
+   - In Vercel dashboard: Settings → Environment Variables
+   - Add `GITHUB_TOKEN` if needed for API limits
 
-- Next: ^15.0.0
-- React: ^19.0.0 (react, react-dom)
-- @react-three/fiber: ^9.0.0
-- @react-three/drei: ^9.113.0
-- three: ^0.169.0
-- tailwindcss: ^4.1.9
-- next-themes: ^0.3.0
-- swr: ^2.3.0
+### Custom Domain
+Update `siteConfig.seo.url` in `lib/config.ts` with your domain.
 
-These are mutually compatible for a modern setup (local and Vercel).
+## 🔧 Customization
 
-## Notes About Toggles and Layout
+### Terminal Configuration
+- Edit `siteConfig.fastfetch` for system information display
+- Add new commands in `components/interactive-terminal.tsx`
+- Customize file contents in the `FILES` object
 
-- Theme toggle (light/dark) lives in layout and is fixed in the top-right.
-- 3D toggle (enable/disable 3D hero) is positioned inside the hero (absolute top-16 right-4 by default) to avoid overlap with the theme toggle. Adjust in components/hero-section.tsx if you want them side-by-side.
+### Disable 3D Effects  
+Set the 3D toggle to OFF by default in `components/three-toggle.tsx` for better performance.
 
-## Requirements
+### Modify Timeline Style
+Edit `components/education.tsx` to customize the Git-style timeline appearance.
 
-- Node.js 20 LTS recommended (>= 18.18.0 works; 20.x is ideal for Next 15)
-- npm 10+ (or pnpm/yarn if you prefer)
-- A GitHub account if you plan to fetch repo metadata (optional GITHUB_TOKEN for higher rate limits)
+### Add More Sections
+Create new components and import them in `app/page.tsx` following the existing pattern.
 
-## Quick Start (Local)
+### Theme Colors
+Modify CSS variables in `app/globals.css` for custom color schemes.
 
-1) Clean install (important if you previously had conflicts)
-- macOS/Linux:
-  - rm -rf node_modules package-lock.json
-  - npm install
-- Windows PowerShell:
-  - Remove-Item -Recurse -Force node_modules; Remove-Item package-lock.json
-  - npm install
+## 🐛 Troubleshooting
 
-2) Run the dev server
-- npm run dev
-- Open http://localhost:3000
+### Common Issues
 
-3) Build and start (production mode)
-- npm run build
-- npm start
+1. **Terminal Not Interactive**
+   - Ensure JavaScript is enabled
+   - Check browser console for errors
+   - Try refreshing the page
 
-4) Lint (optional)
-- npm run lint
+2. **3D Scene Not Loading**
+   - Ensure browser supports WebGL
+   - Check browser console for Three.js errors
+   - Use fallback terminal view
+
+3. **GitHub API Rate Limits**
+   - Add `GITHUB_TOKEN` environment variable
+   - Rate limits reset hourly
+
+4. **Build Errors**
+   - Clear `.next` folder: `rm -rf .next`
+   - Clean install: `rm -rf node_modules package-lock.json && npm install`
+
+5. **Terminal Commands Not Working**
+   - Click inside terminal to focus
+   - Try typing `help` to see available commands
+   - Check browser console for JavaScript errors
+
+## 🎯 Terminal Tips
+
+- Type `fastfetch` to see the impressive GitHub ASCII art display
+- Use `cat .env` to see fun environment variables
+- Try `wget resume.pdf` to actually download the resume
+- Resize the terminal by dragging the bottom-right corner
+- Use keyboard shortcuts for faster navigation
+
+## 📝 License
+
+MIT License - feel free to use this as a template for your own portfolio!
+
+## 🤝 Contributing
+
+Issues and pull requests welcome! This is a personal portfolio but improvements to the template are appreciated.
+
+---
+
+**Built with ❤️ by Devaansh Pathak** | [GitHub](https://github.com/DevaanshPathak) | [LinkedIn](https://linkedin.com/in/your-profile)
