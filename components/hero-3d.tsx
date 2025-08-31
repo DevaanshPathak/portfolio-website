@@ -235,7 +235,6 @@ function KeyCap({
       {/* label */}
       <DreiText
         position={[0, 0.16, 0]}
-        font="/fonts/GeistMono-Regular.ttf"
         fontSize={0.22}
         color={isDark ? "#cbd5e1" : "#334155"}
         anchorX="center"
