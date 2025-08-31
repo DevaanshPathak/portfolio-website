@@ -1,3 +1,13 @@
+export type EducationItem = {
+  institution: string
+  degree: string
+  start: string
+  end?: string
+  description?: string
+  status?: "Completed" | "In Progress" | "Deferred"
+  highlights?: string[]
+}
+
 export const siteConfig = {
   name: "Devaansh Pathak",
   role: "Python Developer",
@@ -38,6 +48,8 @@ export const siteConfig = {
     // { title: "Hackathon Winner", event: "XYZ Hack 2024", date: "2024", details: "Built a FastAPI service..." },
     // { title: "Open-source Contributor", event: "GitHub", date: "2024", details: "Contributed to ..." },
   ],
+
+  education: [] as EducationItem[],
 
   seo: {
     url: "https://your-domain.com",
