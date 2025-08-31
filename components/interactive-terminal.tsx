@@ -71,8 +71,14 @@ export function InteractiveTerminal() {
   const [input, setInput] = useState("")
   const [history, setHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
+  const [isVisible, setIsVisible] = useState(true)
+  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMaximized, setIsMaximized] = useState(false)
+  const [terminalSize, setTerminalSize] = useState({ width: 800, height: 320 })
+  const [isResizing, setIsResizing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
     if (terminalRef.current) {
@@ -107,7 +113,7 @@ export function InteractiveTerminal() {
       case "help":
         const helpText = `Available Commands:
 
-📁 File Operations:
+���� File Operations:
   ls                    List files and directories
   cat [file]           Display file contents
   wget [file]          Download files
