@@ -11,7 +11,7 @@ import { siteConfig } from "@/lib/config"
 
 export default function Page() {
   return (
-    <main className="font-sans">
+    <main className="font-sans" suppressHydrationWarning>
       <HeroSection />
       {Array.isArray(siteConfig.pinnedRepos) && siteConfig.pinnedRepos.length > 0 ? <ProjectsPinned /> : <Projects />}
       <ActivitySnapshot />
