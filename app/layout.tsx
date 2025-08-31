@@ -40,7 +40,7 @@ export default function RootLayout({
 
           {/* Site-wide programmer background */}
           <div
-            aria-hidden
+            aria-hidden="true"
             className="pointer-events-none fixed inset-0 -z-10"
           >
             <div

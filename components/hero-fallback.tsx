@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/config"
 export default function HeroFallback() {
   return (
     <section className="relative w-full h-[100svh] overflow-hidden">
-      <div aria-hidden className="absolute inset-0 bg-background" />
+      <div aria-hidden="true" className="absolute inset-0 bg-background" />
       <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6">
         <div className="w-full rounded-lg border shadow-sm bg-card/60 backdrop-blur-[1px]">
           <div className="flex items-center gap-2 border-b px-3 py-2">

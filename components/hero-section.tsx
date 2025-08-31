@@ -1,5 +1,7 @@
 "use client"
 
+"use client"
+
 import dynamic from "next/dynamic"
 import ThreeToggle, { useThreePreference } from "./three-toggle"
 import HeroFallback from "./hero-fallback"
@@ -16,7 +18,7 @@ export function HeroSection() {
   useEffect(() => setMounted(true), [])
 
   return (
-    <div className="relative">
+    <div className="relative" suppressHydrationWarning>
       {/* Top-right control */}
       <div className="pointer-events-none absolute right-4 top-16 z-50 flex gap-2">
         <div className="pointer-events-auto">
