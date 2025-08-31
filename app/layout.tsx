@@ -37,6 +37,18 @@ export default function RootLayout({
       <body className="font-sans" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ClipboardPatch />
+
+          {/* Site-wide programmer background */}
+          <div
+            aria-hidden
+            className="pointer-events-none fixed inset-0 -z-10"
+          >
+            <div
+              className="absolute inset-0 opacity-15 dark:opacity-20 [background:radial-gradient(circle_at_20%_20%,theme(colors.emerald.500/.15),transparent_30%),radial-gradient(circle_at_80%_30%,theme(colors.cyan.500/.12),transparent_30%),linear-gradient(to_bottom,theme(colors.border)_1px,transparent_1px)] [background-size:40px_40px,40px_40px,100%_36px]"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:100%_3px] mix-blend-overlay" />
+          </div>
+
           <div className="fixed right-4 top-4 z-50">
             <ThemeToggle />
           </div>
