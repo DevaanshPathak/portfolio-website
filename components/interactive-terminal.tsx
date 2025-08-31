@@ -211,7 +211,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
         const hostName = config?.host || 'portfolio'
         const username = siteConfig.name.toLowerCase().replace(' ', '')
         const fastfetch = `        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        ${username}@${hostName}
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ${'��'.repeat(username.length + hostName.length + 1)}
+      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ${'─'.repeat(username.length + hostName.length + 1)}
     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    OS: ${config?.os || 'Portfolio OS'}
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Host: ${config?.host || 'devaansh-dev'}
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Kernel: ${config?.kernel || 'Node.js 20.x'}
@@ -290,7 +290,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
     } else if (e.key === "Tab") {
       e.preventDefault()
       // Simple tab completion for commands and files
-      const commands = ["help", "clear", "ls", "pwd", "whoami", "cat", "wget", "echo", "date", "uptime", "neofetch", "exit"]
+      const commands = ["help", "clear", "ls", "pwd", "whoami", "cat", "wget", "echo", "date", "uptime", "neofetch", "fastfetch", "exit"]
       const files = Object.keys(FILES)
       const allOptions = [...commands, ...files]
 
