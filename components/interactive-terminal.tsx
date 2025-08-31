@@ -485,7 +485,8 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
             <p>
               ⌨️ <kbd className="font-mono bg-muted px-1 rounded text-xs">Tab</kbd> for completion,
               <kbd className="font-mono bg-muted px-1 rounded text-xs">↑↓</kbd> for history,
-              <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+L</kbd> to clear
+              <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+L</kbd> to clear,
+              <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+M</kbd> to minimize
             </p>
             <p>
               🖱️ Click <span className="inline-block w-2 h-2 rounded-full bg-red-500 mx-1"></span> to close,
