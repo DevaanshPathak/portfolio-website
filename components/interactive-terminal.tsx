@@ -377,25 +377,46 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
     <section className="py-8 border-t bg-muted/30">
       <div className="mx-auto max-w-4xl px-4">
         <h2 className="text-xl font-semibold mb-4">Interactive Terminal</h2>
-        <div className="bg-background border rounded-lg shadow-sm overflow-hidden">
+        <div
+          ref={containerRef}
+          className="bg-background border rounded-lg shadow-lg overflow-hidden relative"
+          style={{
+            width: isMaximized ? '100%' : terminalSize.width,
+            maxWidth: '100%'
+          }}
+        >
           {/* Terminal Header */}
-          <div className="flex items-center gap-2 bg-muted/50 px-3 py-2 border-b">
+          <div className="flex items-center gap-2 bg-muted/50 px-3 py-2 border-b relative">
             <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
+              <button
+                onClick={handleClose}
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer"
+                title="Close terminal"
+              />
+              <button
+                onClick={handleMinimize}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer"
+                title="Minimize terminal"
+              />
+              <button
+                onClick={handleMaximize}
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer"
+                title="Maximize terminal"
+              />
             </div>
             <span className="ml-2 text-sm font-mono text-muted-foreground">
-              terminal — bash — 80×24
+              terminal — bash — {Math.floor(terminalSize.width/10)}×{Math.floor(terminalSize.height/16)}
             </span>
           </div>
 
           {/* Terminal Content */}
-          <div 
-            ref={terminalRef}
-            className="h-80 overflow-y-auto p-4 font-mono text-sm bg-background/95"
-            onClick={() => inputRef.current?.focus()}
-          >
+          {!isMinimized && (
+            <div
+              ref={terminalRef}
+              className="overflow-y-auto p-4 font-mono text-sm bg-background/95"
+              style={{ height: terminalSize.height }}
+              onClick={() => inputRef.current?.focus()}
+            >
             {lines.map((line, i) => (
               <div key={i} className={`${
                 line.type === "command" 
@@ -423,7 +444,19 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
               />
               <span className="animate-pulse text-emerald-400">▍</span>
             </form>
-          </div>
+            </div>
+          )}
+
+          {/* Resize Handle */}
+          {!isMaximized && (
+            <div
+              className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize opacity-50 hover:opacity-100 transition-opacity"
+              onMouseDown={handleMouseDown}
+            >
+              <div className="absolute bottom-1 right-1 w-0 h-0 border-l-2 border-b-2 border-muted-foreground" />
+              <div className="absolute bottom-0.5 right-0.5 w-0 h-0 border-l-2 border-b-2 border-muted-foreground" />
+            </div>
+          )}
         </div>
         
         <div className="mt-3 text-sm text-muted-foreground space-y-1">
