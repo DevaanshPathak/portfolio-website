@@ -192,6 +192,14 @@ export function InteractiveTerminal() {
   Tab                  Auto-complete commands
   ↑/↓                  Command history
   Ctrl+L               Clear screen
+  Ctrl+M               Minimize/restore terminal
+  Esc                  Exit fullscreen mode
+
+🖱️  Window Controls:
+  Red button           Close terminal
+  Yellow button        Minimize/restore
+  Green button         Maximize/restore
+  Bottom-right corner  Resize terminal
 
 Try: cat projects.txt, cat .env, wget resume.pdf`
         newLines.push({ type: "output", content: helpText })
@@ -258,7 +266,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
         const neofetch = `
 ┌──────────────────────────��──────────┐
 │  ${siteConfig.name.padEnd(35)} │
-├───────────────────────────────────���─┤
+├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
 │ 🌍 Location: ${siteConfig.location?.padEnd(21) || "Unknown".padEnd(21)} │
 │ 🚀 Tech: Python, FastAPI, Django   │
