@@ -43,7 +43,14 @@ async function ActivitySnapshot() {
           {pushes.map((e, i) => (
             <li key={i} className="rounded-md border p-3">
               <div className="text-sm text-muted-foreground">
-                {e.created_at ? new Date(e.created_at).toLocaleString() : ""}
+                {e.created_at ? new Date(e.created_at).toLocaleString('en-US', {
+                  timeZone: 'UTC',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }) : ""}
               </div>
               <div className="font-medium">{e.repo?.name}</div>
               <ul className="mt-1 list-disc pl-5 text-sm">
