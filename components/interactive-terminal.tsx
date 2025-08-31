@@ -105,7 +105,33 @@ export function InteractiveTerminal() {
         return
 
       case "help":
-        newLines.push({ type: "output", content: COMMANDS.help })
+        const helpText = `Available Commands:
+
+📁 File Operations:
+  ls                    List files and directories
+  cat [file]           Display file contents
+  wget [file]          Download files
+
+ℹ️  System Info:
+  whoami               Show current user
+  pwd                  Show current directory
+  date                 Show current date/time
+  uptime               Show portfolio uptime
+  neofetch             Show system information
+
+🛠️  Utilities:
+  echo [text]          Display text
+  clear                Clear terminal screen
+  help                 Show this help message
+  exit                 Exit message
+
+⌨️  Shortcuts:
+  Tab                  Auto-complete commands
+  ↑/↓                  Command history
+  Ctrl+L               Clear screen
+
+Try: cat projects.txt, cat .env, wget resume.pdf`
+        newLines.push({ type: "output", content: helpText })
         break
 
       case "pwd":
