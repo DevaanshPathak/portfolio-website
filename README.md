@@ -169,28 +169,109 @@ This file contains the full-screen 3D scene and the always-on HTML overlay.
 
 ## Customization Guide
 - Update lib/config.ts
-  - name, role, summary, links
-  - pinnedRepos: paste more GitHub repo URLs to automatically get more “Featured Projects” cards.
-  - githubUsername: enable the auto “Projects” fallback.
-  - certificates: add entries or leave empty to hide the main grid and show guidance.
-- Resume
-  - Place your PDF at /public/resume.pdf and ensure siteConfig.links.resume points to it.
-- 3D Hero tweaks
-  - Tilt: adjust Keyboard3D group rotation.x to taste.
-  - Particle density: tune Particles count and CodeRain count (Hero3D sets fewer on mobile).
-  - Terminal color: change fillStyle in useTerminalTexture if you prefer a different green or size.
+  - Set name, role, summary, and links.
+  - Add pinnedRepos with your GitHub repo URLs to show “Featured Projects.”
+  - Set githubUsername to enable the automatic Projects fallback.
+  - Add coursework and achievements entries if you want those sections populated.
+  - Certificates are optional; leave empty to hide the grid and show guidance.
 
-## Troubleshooting
-- GitHub repos not showing
-  - For Featured Projects: ensure pinnedRepos contains valid GitHub URLs.
-  - For auto Projects: set githubUsername; note unauthenticated GitHub API calls are rate-limited.
-- Text disappeared over 3D
-  - The overlay is outside the Canvas and should always be visible. Keep it out-of-scene to avoid occlusion.
-- Performance on low-end devices
-  - Reduce particle/code-rain counts; consider lowering Canvas dpr or disabling some effects on mobile.
+- public/resume.pdf
+  - Place your resume at /public/resume.pdf and ensure siteConfig.links.resume points to it.
 
-### 3D Toggle and Reduced Motion
-- components/three-toggle.tsx + components/hero-section.tsx
-  - ThreeToggle persists the preference in localStorage ("enable3d") and respects prefers-reduced-motion (defaults to Off if the user prefers reduced motion).
-  - HeroSection reads that preference and renders either the full 3D scene or a static HeroFallback.
-  - Positioning: ThemeToggle is fixed at top-right in layout; to avoid overlap, ThreeToggle is positioned at top-16 in HeroSection (absolute right-4 top-16). Adjust these classes if you want a different placement.
+## Deploying to Vercel
+
+Option A — Deploy from this v0 project:
+- Click Publish in the top-right (in v0). It will deploy to Vercel automatically.
+
+Option B — GitHub + Vercel dashboard:
+- Push your code to a GitHub repository.
+- In Vercel, click “New Project” → Import your repo.
+- Settings:
+  - Framework: Next.js
+  - Build Command: next build (default)
+  - Output Directory: .next (default)
+  - Node version: 20.x (Project Settings → General → Node.js Version)
+- Environment Variables (optional):
+  - GITHUB_TOKEN: If you have rate limits fetching repo metadata, add a Personal Access Token (classic with public_repo scope is enough). Not required, but reduces API throttling.
+- Click Deploy.
+
+After deploy:
+- Verify the homepage shows the 3D hero (toggle “3D” ON if you turned it off before).
+- Check the Featured Projects and Activity Snapshot render (watch for API rate limits).
+
+## Production 3D Hero Checklist (if it doesn’t render)
+
+- Dynamic import:
+  - In components/hero-section.tsx, ensure Hero3D is loaded via:
+    - dynamic(() => import("./hero-3d"), { ssr: false, loading: () => <HeroFallback /> })
+- Client-only logic:
+  - components/hero-3d.tsx should be a Client Component ("use client") and avoid window/document at module scope.
+- Mounted guard:
+  - HeroSection should decide between 3D vs fallback after client mount to avoid SSR hydration mismatch.
+- Preference + reduced motion:
+  - The 3D toggle should default ON unless the user prefers reduced motion or previously turned it off (stored in localStorage).
+- Layout:
+  - The hero wrapper should be relative w-full h-screen. The Canvas should be absolute inset-0, with the HTML overlay at a higher z-index above it.
+
+## Troubleshooting (Local)
+
+- Install conflicts or peer dependency errors:
+  - Ensure Node 20 and npm 10+.
+  - Do a clean install: delete node_modules and package-lock.json, then npm install.
+  - Confirm package.json uses:
+    - next ^15, react ^19, react-dom ^19
+    - @react-three/fiber ^9, @react-three/drei ^9, three ^0.169
+    - tailwindcss ^4, next-themes ^0.3, swr ^2
+
+- GitHub API rate limits:
+  - Add GITHUB_TOKEN in a .env.local for local dev and in Vercel Project Settings for production.
+  - The site gracefully falls back to messaging when rate-limited.
+
+- 3D hero performance:
+  - Use the 3D toggle to disable heavy effects on low-end devices.
+  - The hero respects prefers-reduced-motion automatically.
+
+## Version Snapshot (package.json)
+
+- Next: ^15.0.0
+- React: ^19.0.0 (react, react-dom)
+- @react-three/fiber: ^9.0.0
+- @react-three/drei: ^9.113.0
+- three: ^0.169.0
+- tailwindcss: ^4.1.9
+- next-themes: ^0.3.0
+- swr: ^2.3.0
+
+These are mutually compatible for a modern setup (local and Vercel).
+
+## Notes About Toggles and Layout
+
+- Theme toggle (light/dark) lives in layout and is fixed in the top-right.
+- 3D toggle (enable/disable 3D hero) is positioned inside the hero (absolute top-16 right-4 by default) to avoid overlap with the theme toggle. Adjust in components/hero-section.tsx if you want them side-by-side.
+
+## Requirements
+
+- Node.js 20 LTS recommended (>= 18.18.0 works; 20.x is ideal for Next 15)
+- npm 10+ (or pnpm/yarn if you prefer)
+- A GitHub account if you plan to fetch repo metadata (optional GITHUB_TOKEN for higher rate limits)
+
+## Quick Start (Local)
+
+1) Clean install (important if you previously had conflicts)
+- macOS/Linux:
+  - rm -rf node_modules package-lock.json
+  - npm install
+- Windows PowerShell:
+  - Remove-Item -Recurse -Force node_modules; Remove-Item package-lock.json
+  - npm install
+
+2) Run the dev server
+- npm run dev
+- Open http://localhost:3000
+
+3) Build and start (production mode)
+- npm run build
+- npm start
+
+4) Lint (optional)
+- npm run lint
