@@ -258,7 +258,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
         const neofetch = `
 ┌──────────────────────────��──────────┐
 │  ${siteConfig.name.padEnd(35)} │
-├─────────────────────────────────────┤
+├───────────────────────────────────���─┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
 │ 🌍 Location: ${siteConfig.location?.padEnd(21) || "Unknown".padEnd(21)} │
 │ 🚀 Tech: Python, FastAPI, Django   │
@@ -370,6 +370,14 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
       e.preventDefault()
       setLines([])
       setInput("")
+    } else if (e.key === "m" && e.ctrlKey) {
+      e.preventDefault()
+      handleMinimize()
+    } else if (e.key === "Escape") {
+      e.preventDefault()
+      if (isMaximized) {
+        handleMaximize()
+      }
     }
   }
 
