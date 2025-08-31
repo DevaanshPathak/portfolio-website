@@ -90,6 +90,62 @@ export function InteractiveTerminal() {
     scrollToBottom()
   }, [lines])
 
+  // Window control handlers
+  const handleClose = () => setIsVisible(false)
+  const handleMinimize = () => setIsMinimized(!isMinimized)
+  const handleMaximize = () => {
+    if (isMaximized) {
+      setTerminalSize({ width: 800, height: 320 })
+    } else {
+      setTerminalSize({ width: window.innerWidth - 32, height: window.innerHeight - 200 })
+    }
+    setIsMaximized(!isMaximized)
+  }
+
+  // Resize handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsResizing(true)
+
+    const startX = e.clientX
+    const startY = e.clientY
+    const startWidth = terminalSize.width
+    const startHeight = terminalSize.height
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = Math.max(400, startWidth + (e.clientX - startX))
+      const newHeight = Math.max(200, startHeight + (e.clientY - startY))
+      setTerminalSize({ width: newWidth, height: newHeight })
+    }
+
+    const handleMouseUp = () => {
+      setIsResizing(false)
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+  }
+
+  if (!isVisible) {
+    return (
+      <section className="py-8 border-t bg-muted/30">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Interactive Terminal</h2>
+            <button
+              onClick={() => setIsVisible(true)}
+              className="px-3 py-1 text-sm border rounded-md hover:bg-muted/70 font-mono"
+            >
+              Reopen Terminal
+            </button>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   const executeCommand = (cmd: string) => {
     const trimmedCmd = cmd.trim()
     if (!trimmedCmd) return
@@ -113,7 +169,7 @@ export function InteractiveTerminal() {
       case "help":
         const helpText = `Available Commands:
 
-���� File Operations:
+📁 File Operations:
   ls                    List files and directories
   cat [file]           Display file contents
   wget [file]          Download files
@@ -200,7 +256,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
 
       case "neofetch":
         const neofetch = `
-┌─────────────────────────────────────┐
+┌──────────────────────────��──────────┐
 │  ${siteConfig.name.padEnd(35)} │
 ├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
