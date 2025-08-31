@@ -465,11 +465,19 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
             <code className="font-mono bg-muted px-1 rounded ml-1">cat projects.txt</code>,
             <code className="font-mono bg-muted px-1 rounded ml-1">wget resume.pdf</code>
           </p>
-          <p className="text-xs">
-            💡 Use <kbd className="font-mono bg-muted px-1 rounded text-xs">Tab</kbd> for completion,
-            <kbd className="font-mono bg-muted px-1 rounded text-xs">↑↓</kbd> for history,
-            <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+L</kbd> to clear
-          </p>
+          <div className="text-xs space-y-1">
+            <p>
+              ⌨️ <kbd className="font-mono bg-muted px-1 rounded text-xs">Tab</kbd> for completion,
+              <kbd className="font-mono bg-muted px-1 rounded text-xs">↑↓</kbd> for history,
+              <kbd className="font-mono bg-muted px-1 rounded text-xs">Ctrl+L</kbd> to clear
+            </p>
+            <p>
+              🖱️ Click <span className="inline-block w-2 h-2 rounded-full bg-red-500 mx-1"></span> to close,
+              <span className="inline-block w-2 h-2 rounded-full bg-yellow-500 mx-1"></span> to minimize,
+              <span className="inline-block w-2 h-2 rounded-full bg-green-500 mx-1"></span> to maximize •
+              Drag bottom-right corner to resize
+            </p>
+          </div>
         </div>
       </div>
     </section>
