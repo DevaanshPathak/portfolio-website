@@ -141,12 +141,43 @@ export function InteractiveTerminal() {
         newLines.push({ type: "output", content: text || "" })
         break
 
+      case "date":
+        newLines.push({ type: "output", content: COMMANDS.date() })
+        break
+
+      case "uptime":
+        newLines.push({ type: "output", content: COMMANDS.uptime() })
+        break
+
+      case "neofetch":
+        const neofetch = `
+┌─────────────────────────────────────┐
+│  ${siteConfig.name.padEnd(35)} │
+├─────────────────────────────────────┤
+│ 💻 Role: ${siteConfig.role.padEnd(25)} │
+│ 🌍 Location: ${siteConfig.location?.padEnd(21) || "Unknown".padEnd(21)} │
+│ 🚀 Tech: Python, FastAPI, Django   │
+│ 📧 Contact: Available via terminal  │
+│ 🔗 GitHub: DevaanshPathak          │
+└─────────────────────────────────────┘`
+        newLines.push({ type: "output", content: neofetch })
+        break
+
       case "exit":
         newLines.push({ type: "output", content: "Thanks for visiting! 👋" })
         break
 
       case "sudo":
         newLines.push({ type: "error", content: "Nice try! 😏 This is a portfolio terminal, not a real system." })
+        break
+
+      case "rm":
+        newLines.push({ type: "error", content: "rm: Operation not permitted. This portfolio is read-only!" })
+        break
+
+      case "mv":
+      case "cp":
+        newLines.push({ type: "error", content: `${command}: Permission denied. Portfolio files are protected.` })
         break
 
       default:
