@@ -51,6 +51,28 @@ export const siteConfig = {
 
   education: [] as EducationItem[],
 
+  // Fastfetch profile configuration
+  fastfetch: {
+    os: "Portfolio OS",
+    host: "devaansh-dev",
+    kernel: "Node.js 20.x",
+    uptime: "Always Online",
+    packages: "npm (1337 packages)",
+    shell: "bash 5.1.8",
+    resolution: "Responsive",
+    theme: "Dark/Light Auto",
+    icons: "Lucide React",
+    terminal: "Interactive Web Terminal",
+    cpu: "Python Engine",
+    gpu: "CSS Animations",
+    memory: "Optimized for Performance",
+    disk: "Cloud Storage",
+    localip: "127.0.0.1",
+    publicip: "Fly.dev",
+    battery: "Powered by Coffee ☕",
+    locale: "en_US.UTF-8"
+  },
+
   seo: {
     url: "https://your-domain.com",
     title: "Devaansh Pathak — Python Developer",
