@@ -24,14 +24,14 @@ const COMMANDS = {
 
 const FILES = {
   "projects.txt": () => {
-    const projects = Array.isArray(siteConfig.pinnedRepos) 
+    const projects = Array.isArray(siteConfig.pinnedRepos)
       ? siteConfig.pinnedRepos.map((repo, i) => {
           const url = typeof repo === "string" ? repo : repo.url
           const name = typeof repo === "string" ? url.split("/").pop() : repo.label || url.split("/").pop()
           return `${i + 1}. ${name} - ${url}`
         }).join("\n")
       : "No featured projects configured"
-    
+
     return `Featured Projects:\n${projects}\n\nView all projects at: ${siteConfig.links.github}`
   },
   "skills.txt": () => {
@@ -43,6 +43,22 @@ const FILES = {
   },
   "contact.txt": () => {
     return `Contact Information:\n• Email: ${siteConfig.links.email?.replace("mailto:", "")}\n• GitHub: ${siteConfig.links.github}\n• LinkedIn: ${siteConfig.links.linkedin}`
+  },
+  ".env": () => {
+    return `# Portfolio Environment Variables
+DEVELOPER_NAME="${siteConfig.name}"
+ROLE="Python Developer"
+PASSION_LEVEL="Maximum"
+COFFEE_CONSUMPTION="High"
+DEBUG_MODE="Always"
+LEARNING_MODE="Continuous"
+COLLABORATION="Open"
+HIRING_STATUS="Available"
+
+# Fun stats
+COMMITS_THIS_MONTH="42"
+BUGS_FIXED="∞"
+FEATURES_SHIPPED="Many"`
   },
   "resume.pdf": () => "Error: Cannot display binary file. Use 'wget resume.pdf' to download."
 }
