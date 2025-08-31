@@ -9,7 +9,7 @@ type TerminalLine = {
 }
 
 const COMMANDS = {
-  help: "Available commands: help, clear, ls, pwd, whoami, cat [file], wget [file], echo [text], date, uptime, neofetch, exit",
+  help: "Available commands: help, clear, ls, pwd, whoami, cat [file], wget [file], echo [text], date, uptime, neofetch, fastfetch, exit",
   pwd: "/home/devaansh/portfolio",
   whoami: siteConfig.name,
   ls: "projects.txt  resume.pdf  skills.txt  contact.txt  about.txt  .env",
