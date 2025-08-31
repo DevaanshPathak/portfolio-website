@@ -366,9 +366,9 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
         
         <div className="mt-3 text-sm text-muted-foreground space-y-1">
           <p>
-            Try commands: <code className="font-mono bg-muted px-1 rounded">cat projects.txt</code>,
-            <code className="font-mono bg-muted px-1 rounded ml-1">wget resume.pdf</code>,
-            <code className="font-mono bg-muted px-1 rounded ml-1">neofetch</code>
+            Try commands: <code className="font-mono bg-muted px-1 rounded">fastfetch</code>,
+            <code className="font-mono bg-muted px-1 rounded ml-1">cat projects.txt</code>,
+            <code className="font-mono bg-muted px-1 rounded ml-1">wget resume.pdf</code>
           </p>
           <p className="text-xs">
             💡 Use <kbd className="font-mono bg-muted px-1 rounded text-xs">Tab</kbd> for completion,
