@@ -7,28 +7,40 @@ import { siteConfig } from "@/lib/config"
 export default function HeroFallback() {
   return (
     <section className="relative w-full h-[100svh] overflow-hidden">
-      {/* subtle background pattern */}
       <div aria-hidden className="absolute inset-0 bg-background" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-20 [background:radial-gradient(circle_at_20%_20%,theme(colors.primary.DEFAULT/.25),transparent_30%),radial-gradient(circle_at_80%_30%,theme(colors.emerald.500/.15),transparent_30%),linear-gradient(to_bottom,theme(colors.border)_1px,transparent_1px)] [background-size:40px_40px,40px_40px,100%_40px]"
-      />
-      <div className="relative z-10 mx-auto flex h-full max-w-5xl flex-col items-center justify-center gap-6 px-6 text-center">
-        <p className="text-sm text-muted-foreground tracking-wide">{siteConfig.role}</p>
-        <h1 className={cn("text-pretty text-4xl md:text-6xl font-semibold")}>{siteConfig.name}</h1>
-        <p className="max-w-2xl text-pretty text-muted-foreground md:text-lg">{siteConfig.summary}</p>
-        <div className="flex gap-3">
-          <Link className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:opacity-90" href="#projects">
-            View Projects
-          </Link>
-          <a
-            className="rounded-md border px-4 py-2 hover:bg-muted"
-            href={siteConfig.links.resume}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Download Resume
-          </a>
+      <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6">
+        <div className="w-full rounded-lg border shadow-sm bg-card/60 backdrop-blur-[1px]">
+          <div className="flex items-center gap-2 border-b px-3 py-2">
+            <span className="size-2.5 rounded-full bg-red-500/80" />
+            <span className="size-2.5 rounded-full bg-yellow-500/80" />
+            <span className="size-2.5 rounded-full bg-emerald-500/80" />
+            <span className="ml-2 text-xs text-muted-foreground font-mono">/bin/portfolio — bash</span>
+          </div>
+          <div className="p-5 font-mono text-sm md:text-base">
+            <p className="text-muted-foreground">$ whoami</p>
+            <p className="mb-4">{siteConfig.name}</p>
+            <p className="text-muted-foreground">$ echo $ROLE</p>
+            <p className="mb-4">{siteConfig.role}</p>
+            <p className="text-muted-foreground">$ cat summary.txt</p>
+            <p className="mb-4 leading-relaxed text-foreground/90">{siteConfig.summary}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Link className="border px-3 py-1.5 rounded-md hover:bg-muted/70" href="#projects">
+                ./view-projects
+              </Link>
+              <a
+                className="border px-3 py-1.5 rounded-md hover:bg-muted/70"
+                href={siteConfig.links.resume}
+                target="_blank"
+                rel="noreferrer"
+              >
+                curl -O resume.pdf
+              </a>
+              <a className="border px-3 py-1.5 rounded-md hover:bg-muted/70" href={siteConfig.links.github} target="_blank" rel="noreferrer">
+                git remote -v
+              </a>
+            </div>
+            <p className="mt-6 text-emerald-500">$ <span className="animate-pulse">▍</span></p>
+          </div>
         </div>
       </div>
     </section>
