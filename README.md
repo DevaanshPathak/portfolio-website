@@ -1,6 +1,6 @@
-# Portfolio — Documentation
+# Student Portfolio (Python Developer) — Documentation
 
-A personal portfolio featuring:
+A personal portfolio optimized for applications (e.g., Scaler School of Technology), featuring:
 - A 3D, programmer-themed hero with an interactive keyboard and a live terminal on a 3D monitor
 - Featured (pinned) GitHub repositories and/or auto-fetched repos
 - Optional certificates section

@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic"
 import ThreeToggle, { useThreePreference } from "./three-toggle"
 import HeroFallback from "./hero-fallback"
+import { useEffect, useState } from "react"
 
 const Hero3D = dynamic(() => import("./hero-3d").then((m) => m.Hero3D), {
   ssr: false,
@@ -11,6 +12,9 @@ const Hero3D = dynamic(() => import("./hero-3d").then((m) => m.Hero3D), {
 
 export function HeroSection() {
   const { enabled } = useThreePreference()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   return (
     <div className="relative">
       {/* Top-right control */}
@@ -20,7 +24,8 @@ export function HeroSection() {
         </div>
       </div>
 
-      {enabled ? <Hero3D /> : <HeroFallback />}
+      {/* Only decide after mount to avoid SSR mismatch; still shows a good fallback while mounting */}
+      {mounted ? enabled ? <Hero3D /> : <HeroFallback /> : <HeroFallback />}
     </div>
   )
 }

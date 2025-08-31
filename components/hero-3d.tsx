@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, Grid, Text as DreiText } from "@react-three/drei"
+import { OrbitControls, Text as DreiText } from "@react-three/drei"
 import * as THREE from "three"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
@@ -36,29 +36,6 @@ function Particles({ count = 800, color = "#94a3b8" }: { count?: number; color?:
       </bufferGeometry>
       <pointsMaterial size={0.03} sizeAttenuation color={color} transparent opacity={0.8} />
     </points>
-  )
-}
-
-function NeonGrid() {
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
-  const primary = isDark ? "#06b6d4" : "#164e63"
-  const secondary = isDark ? "#1f2937" : "#e5e7eb"
-
-  return (
-    <Grid
-      infiniteGrid
-      fadeDistance={30}
-      fadeStrength={1}
-      cellSize={0.4}
-      sectionSize={3}
-      cellThickness={0.6}
-      sectionThickness={1.2}
-      cellColor={secondary}
-      sectionColor={primary}
-      position={[0, -1.4, 0]}
-      rotation={[-Math.PI / -2, 0, 0]}
-    />
   )
 }
 
@@ -546,7 +523,6 @@ export function Hero3D() {
             <Keyboard3D onAppend={append} onBackspace={backspace} />
             {/* ambient effects */}
             <Particles count={particleCount} color={particleColor} />
-            <NeonGrid />
             <CodeRain count={rainCount} />
           </group>
 
