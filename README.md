@@ -2,8 +2,6 @@
 
 A modern, programmer-themed portfolio website showcasing Python development skills and projects. Built with Next.js and featuring a fully interactive terminal, Git-style timeline, and optional 3D elements.
 
-🌐 **Live Site**: [View Portfolio](https://your-domain.com)
-
 ## ✨ Features
 
 ### 🖥️ Interactive Terminal
