@@ -456,7 +456,6 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
                 onKeyDown={handleKeyDown}
                 className="flex-1 bg-transparent border-none outline-none text-foreground font-mono caret-emerald-400"
                 placeholder="Type a command..."
-                autoFocus
               />
               <span className="animate-pulse text-emerald-400">▍</span>
             </form>
