@@ -71,7 +71,7 @@ export function Education() {
   const items = Array.isArray(siteConfig.education) ? siteConfig.education : []
 
   return (
-    <section id="education" className="py-10 md:py-12 border-t">
+    <section id="education" className="py-10 md:py-12 border-t" suppressHydrationWarning>
       <div className="mx-auto max-w-3xl px-4">
         <h2 className="text-2xl font-semibold">Education</h2>
 

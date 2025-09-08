@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export function Contact() {
   return (
-    <section id="contact" className="py-12 md:py-16 border-t">
+    <section id="contact" className="py-12 md:py-16 border-t" suppressHydrationWarning>
       <div className="mx-auto max-w-3xl px-4 text-center">
         <h2 className="text-2xl font-semibold">Get in touch</h2>
         <p className="mt-2 text-muted-foreground">
