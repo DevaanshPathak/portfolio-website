@@ -17,7 +17,7 @@ export function Certificates() {
 
   if (!Array.isArray(items) || items.length === 0) {
     return (
-      <section id="certificates" className="py-10 md:py-12 border-t">
+      <section id="certificates" className="py-10 md:py-12 border-t" suppressHydrationWarning>
         <div className="mx-auto max-w-5xl px-4">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold text-pretty">Certificates</h2>
@@ -34,7 +34,7 @@ export function Certificates() {
   }
 
   return (
-    <section id="certificates" className="py-10 md:py-12 border-t">
+    <section id="certificates" className="py-10 md:py-12 border-t" suppressHydrationWarning>
       <div className="mx-auto max-w-5xl px-4">
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-pretty">Certificates</h2>

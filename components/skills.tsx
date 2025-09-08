@@ -2,7 +2,7 @@ const skills = ["Python", "FastAPI", "Django", "PostgreSQL", "Docker", "Git", "L
 
 export function Skills() {
   return (
-    <section id="skills" className="py-10 md:py-12 border-t">
+    <section id="skills" className="py-10 md:py-12 border-t" suppressHydrationWarning>
       <div className="mx-auto max-w-5xl px-4">
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-pretty">Skills</h2>
