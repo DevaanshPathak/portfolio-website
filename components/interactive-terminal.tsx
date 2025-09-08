@@ -1,5 +1,7 @@
 "use client"
 
+"use client"
+
 import { useState, useRef, useEffect } from "react"
 import { siteConfig } from "@/lib/config"
 
@@ -130,7 +132,7 @@ export function InteractiveTerminal() {
 
   if (!isVisible) {
     return (
-      <section className="py-8 border-t bg-muted/30">
+      <section className="py-8 border-t bg-muted/30" suppressHydrationWarning>
         <div className="mx-auto max-w-4xl px-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">Interactive Terminal</h2>
@@ -264,7 +266,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
 
       case "neofetch":
         const neofetch = `
-┌──────────────────────────��──────────┐
+┌───────────���──────────────��──────────┐
 │  ${siteConfig.name.padEnd(35)} │
 ├─────────────────────────────────────┤
 │ 💻 Role: ${siteConfig.role.padEnd(25)} │
@@ -390,7 +392,7 @@ Try: cat projects.txt, cat .env, wget resume.pdf`
   }
 
   return (
-    <section className="py-8 border-t bg-muted/30">
+    <section className="py-8 border-t bg-muted/30" suppressHydrationWarning>
       <div className="mx-auto max-w-4xl px-4">
         <h2 className="text-xl font-semibold mb-4">Interactive Terminal</h2>
         <div
