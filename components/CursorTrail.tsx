@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
 
 const isFinePointer = () =>
@@ -10,25 +10,22 @@ const prefersReducedMotion = () =>
 
 export default function CursorTrail() {
   const { resolvedTheme } = useTheme()
-  const color = resolvedTheme === "dark" ? "#22d3ee" : "#06b6d4" // cyan
-  const dotColor = resolvedTheme === "dark" ? "#67e8f9" : "#22d3ee"
+  const mainColor = resolvedTheme === "dark" ? "#67e8f9" : "#22d3ee"
+  const trailColor = resolvedTheme === "dark" ? "#22d3ee" : "#06b6d4"
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const rafRef = useRef<number | null>(null)
-  const dprRef = useRef<number>(1)
   const [enabled, setEnabled] = useState(false)
 
-  const state = useRef({
-    points: [] as { x: number; y: number; t: number }[],
-    mouseX: 0,
-    mouseY: 0,
-    visible: false,
-    lastX: 0,
-    lastY: 0,
-    lastT: 0,
-  })
+  // DOM refs
+  const mainRef = useRef<HTMLDivElement | null>(null)
+  const followerRefs = useRef<HTMLDivElement[]>([])
 
-  // initialize on mount
+  // positions state (main + 4 followers)
+  const target = useRef({ x: 0, y: 0 })
+  const points = useRef(
+    Array.from({ length: 5 }, () => ({ x: typeof window !== "undefined" ? window.innerWidth / 2 : 0, y: typeof window !== "undefined" ? window.innerHeight / 2 : 0 }))
+  )
+  const rafRef = useRef<number | null>(null)
+
   useEffect(() => {
     if (!isFinePointer() || prefersReducedMotion()) {
       setEnabled(false)
@@ -37,172 +34,120 @@ export default function CursorTrail() {
     setEnabled(true)
   }, [])
 
-  // helpers
-  const resizeCanvas = () => {
-    const c = canvasRef.current
-    if (!c) return
-    const { innerWidth: w, innerHeight: h, devicePixelRatio: dpr = 1 } = window
-    dprRef.current = Math.min(0.75, dpr)
-    c.width = Math.floor(w * dprRef.current)
-    c.height = Math.floor(h * dprRef.current)
-    c.style.width = w + "px"
-    c.style.height = h + "px"
-  }
-
-  // animation loop
+  // Animation loop
   useEffect(() => {
     if (!enabled) return
 
-    const c = canvasRef.current
-    if (!c) return
-    const ctx = c.getContext("2d", { alpha: true, desynchronized: true } as any)!
-    resizeCanvas()
+    const step = () => {
+      // easing factors: main fastest, followers progressively slower
+      const ease = [0.35, 0.22, 0.18, 0.15, 0.12]
 
-    const MAX_AGE = 1200 // ms
-
-    const draw = () => {
-      const now = performance.now()
-      const dpr = dprRef.current
-
-      ctx.clearRect(0, 0, c.width, c.height)
-      ctx.globalCompositeOperation = "source-over"
-
-      // draw trails
-      const pts = state.current.points
-      // remove old
-      let i = 0
-      while (i < pts.length && now - pts[i].t > MAX_AGE) i++
-      if (i > 0) pts.splice(0, i)
-
-      for (let j = 0; j < pts.length; j++) {
-        const p = pts[j]
-        const age = (now - p.t) / MAX_AGE // 0..1
-        const alpha = Math.max(0, 1 - age)
-        const skip = age > 0.66 ? 3 : age > 0.33 ? 2 : 1
-        if (j % skip) continue
-        const r = 6 + 12 * (1 - age)
-        const x = p.x * dpr
-        const y = p.y * dpr
-
-        const grad = ctx.createRadialGradient(x, y, 0, x, y, r * dpr)
-        grad.addColorStop(0, hexWithAlpha(color, alpha * 0.45))
-        grad.addColorStop(0.35, hexWithAlpha(color, alpha * 0.25))
-        grad.addColorStop(1, hexWithAlpha(color, 0))
-
-        ctx.fillStyle = grad
-        ctx.shadowColor = color
-        ctx.shadowBlur = 0
-        ctx.beginPath()
-        ctx.arc(x, y, r * dpr, 0, Math.PI * 2)
-        ctx.fill()
+      // move main toward pointer, followers toward previous
+      const p = points.current
+      p[0].x += (target.current.x - p[0].x) * ease[0]
+      p[0].y += (target.current.y - p[0].y) * ease[0]
+      for (let i = 1; i < p.length; i++) {
+        p[i].x += (p[i - 1].x - p[i].x) * ease[i]
+        p[i].y += (p[i - 1].y - p[i].y) * ease[i]
       }
 
-      rafRef.current = requestAnimationFrame(draw)
+      // apply DOM transforms
+      const m = mainRef.current
+      if (m) m.style.transform = `translate3d(${Math.round(p[0].x - 8)}px, ${Math.round(p[0].y - 8)}px, 0)`
+      for (let i = 0; i < followerRefs.current.length; i++) {
+        const el = followerRefs.current[i]
+        const pos = p[i + 1]
+        if (el && pos) el.style.transform = `translate3d(${Math.round(pos.x - followerSizes[i] / 2)}px, ${Math.round(pos.y - followerSizes[i] / 2)}px, 0)`
+      }
+
+      rafRef.current = requestAnimationFrame(step)
     }
 
-    rafRef.current = requestAnimationFrame(draw)
+    rafRef.current = requestAnimationFrame(step)
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [enabled, color])
+  }, [enabled])
 
-  // events
+  // Pointer events
   useEffect(() => {
     if (!enabled) return
 
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return
-      const x = e.clientX
-      const y = e.clientY
-      state.current.mouseX = x
-      state.current.mouseY = y
-      state.current.visible = true
-      const now = performance.now()
-      const dx = x - state.current.lastX
-      const dy = y - state.current.lastY
-      const dist2 = dx * dx + dy * dy
-      const dt = now - state.current.lastT
-      if (dt > 22 || dist2 > 16) {
-        state.current.points.push({ x, y, t: now })
-        state.current.lastX = x
-        state.current.lastY = y
-        state.current.lastT = now
-      }
-      if (state.current.points.length > 300) state.current.points.splice(0, state.current.points.length - 300)
-      positionDot(x, y)
+      target.current.x = e.clientX
+      target.current.y = e.clientY
+      show()
     }
-    const onLeave = () => {
-      state.current.visible = false
-      hideDot()
-    }
-    const onResize = () => resizeCanvas()
+    const onLeave = () => hide()
 
     window.addEventListener("pointermove", onMove, { passive: true })
     window.addEventListener("pointerleave", onLeave)
-    window.addEventListener("resize", onResize)
 
-    // hide native cursor
     const prevCursor = document.body.style.cursor
     document.body.style.cursor = "none"
 
     return () => {
       window.removeEventListener("pointermove", onMove)
       window.removeEventListener("pointerleave", onLeave)
-      window.removeEventListener("resize", onResize)
       document.body.style.cursor = prevCursor
     }
   }, [enabled])
 
-  // neon dot element management
-  const dotRef = useRef<HTMLDivElement | null>(null)
-  const positionDot = (x: number, y: number) => {
-    const el = dotRef.current
-    if (!el) return
-    el.style.transform = `translate3d(${x - 4}px, ${y - 4}px, 0)`
-    el.style.opacity = "1"
+  const show = () => {
+    const m = mainRef.current
+    if (m) m.style.opacity = "1"
+    followerRefs.current.forEach((el) => (el.style.opacity = "1"))
   }
-  const hideDot = () => {
-    const el = dotRef.current
-    if (!el) return
-    el.style.opacity = "0"
+  const hide = () => {
+    const m = mainRef.current
+    if (m) m.style.opacity = "0"
+    followerRefs.current.forEach((el) => (el.style.opacity = "0"))
   }
 
   if (!enabled) return null
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none fixed inset-0 z-[60]"
-        aria-hidden
-      />
       <div
-        ref={dotRef}
+        ref={mainRef}
         aria-hidden
         className="fixed z-[61] pointer-events-none"
         style={{
-          width: 8,
-          height: 8,
+          width: 16, // bigger main cursor
+          height: 16,
           borderRadius: 9999,
-          background: dotColor,
-          boxShadow: `0 0 4px ${dotColor}, 0 0 8px ${color}`,
-          filter: "none",
-          transition: "opacity 180ms ease-out, transform 40ms linear",
+          background: mainColor,
           opacity: 0,
           left: 0,
           top: 0,
+          transition: "opacity 160ms ease-out",
+          boxShadow: `0 0 4px ${mainColor}`,
         }}
       />
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            if (el) followerRefs.current[i] = el
+          }}
+          aria-hidden
+          className="fixed z-[60] pointer-events-none"
+          style={{
+            width: followerSizes[i],
+            height: followerSizes[i],
+            borderRadius: 9999,
+            background: trailColor,
+            opacity: followerOpacities[i],
+            left: 0,
+            top: 0,
+            transition: "opacity 160ms ease-out",
+          }}
+        />
+      ))}
     </>
   )
 }
 
-function hexWithAlpha(hex: string, alpha: number) {
-  const a = Math.max(0, Math.min(1, alpha))
-  const n = Math.round(a * 255)
-  const h = n.toString(16).padStart(2, "0")
-  // normalize 3/6 digit hex to 6
-  const norm = hex.replace("#", "")
-  const six = norm.length === 3 ? norm.split("").map((c) => c + c).join("") : norm
-  return `#${six}${h}`
-}
+const followerSizes = [10, 8, 6, 4]
+const followerOpacities = [0.5, 0.35, 0.25, 0.15]
