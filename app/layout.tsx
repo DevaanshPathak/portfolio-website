@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { siteConfig } from "@/lib/config"
 import ClipboardPatch from "@/components/ClipboardPatch"
+import CursorTrail from "@/components/CursorTrail"
 
 const geistSans = Manrope({
   subsets: ["latin"],
@@ -70,6 +71,7 @@ export default function RootLayout({
             }}
           />
 
+          <CursorTrail />
           <Suspense fallback={null}>{children}</Suspense>
           <Analytics />
         </ThemeProvider>
