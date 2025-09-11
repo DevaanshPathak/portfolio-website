@@ -23,6 +23,9 @@ export default function CursorTrail() {
     mouseX: 0,
     mouseY: 0,
     visible: false,
+    lastX: 0,
+    lastY: 0,
+    lastT: 0,
   })
 
   // initialize on mount
@@ -39,7 +42,7 @@ export default function CursorTrail() {
     const c = canvasRef.current
     if (!c) return
     const { innerWidth: w, innerHeight: h, devicePixelRatio: dpr = 1 } = window
-    dprRef.current = Math.min(2, dpr)
+    dprRef.current = Math.min(1, dpr)
     c.width = Math.floor(w * dprRef.current)
     c.height = Math.floor(h * dprRef.current)
     c.style.width = w + "px"
@@ -52,17 +55,17 @@ export default function CursorTrail() {
 
     const c = canvasRef.current
     if (!c) return
-    const ctx = c.getContext("2d")!
+    const ctx = c.getContext("2d", { alpha: true, desynchronized: true } as any)!
     resizeCanvas()
 
-    const MAX_AGE = 2800 // ms
+    const MAX_AGE = 1800 // ms
 
     const draw = () => {
       const now = performance.now()
       const dpr = dprRef.current
 
       ctx.clearRect(0, 0, c.width, c.height)
-      ctx.globalCompositeOperation = "lighter"
+      ctx.globalCompositeOperation = "source-over"
 
       // draw trails
       const pts = state.current.points
@@ -75,18 +78,18 @@ export default function CursorTrail() {
         const p = pts[j]
         const age = (now - p.t) / MAX_AGE // 0..1
         const alpha = Math.max(0, 1 - age)
-        const r = 14 + 30 * (1 - age)
+        const r = 10 + 22 * (1 - age)
         const x = p.x * dpr
         const y = p.y * dpr
 
         const grad = ctx.createRadialGradient(x, y, 0, x, y, r * dpr)
-        grad.addColorStop(0, hexWithAlpha(color, alpha * 0.9))
-        grad.addColorStop(0.4, hexWithAlpha(color, alpha * 0.5))
+        grad.addColorStop(0, hexWithAlpha(color, alpha * 0.6))
+        grad.addColorStop(0.35, hexWithAlpha(color, alpha * 0.35))
         grad.addColorStop(1, hexWithAlpha(color, 0))
 
         ctx.fillStyle = grad
         ctx.shadowColor = color
-        ctx.shadowBlur = 24 * dpr * alpha
+        ctx.shadowBlur = 12 * dpr * alpha
         ctx.beginPath()
         ctx.arc(x, y, r * dpr, 0, Math.PI * 2)
         ctx.fill()
@@ -112,8 +115,18 @@ export default function CursorTrail() {
       state.current.mouseX = x
       state.current.mouseY = y
       state.current.visible = true
-      state.current.points.push({ x, y, t: performance.now() })
-      if (state.current.points.length > 1200) state.current.points.splice(0, state.current.points.length - 1200)
+      const now = performance.now()
+      const dx = x - state.current.lastX
+      const dy = y - state.current.lastY
+      const dist2 = dx * dx + dy * dy
+      const dt = now - state.current.lastT
+      if (dt > 12 || dist2 > 9) {
+        state.current.points.push({ x, y, t: now })
+        state.current.lastX = x
+        state.current.lastY = y
+        state.current.lastT = now
+      }
+      if (state.current.points.length > 600) state.current.points.splice(0, state.current.points.length - 600)
       positionDot(x, y)
     }
     const onLeave = () => {
@@ -143,7 +156,7 @@ export default function CursorTrail() {
   const positionDot = (x: number, y: number) => {
     const el = dotRef.current
     if (!el) return
-    el.style.transform = `translate3d(${x - 6}px, ${y - 6}px, 0)`
+    el.style.transform = `translate3d(${x - 5}px, ${y - 5}px, 0)`
     el.style.opacity = "1"
   }
   const hideDot = () => {
@@ -166,12 +179,12 @@ export default function CursorTrail() {
         aria-hidden
         className="fixed z-[61] pointer-events-none"
         style={{
-          width: 12,
-          height: 12,
+          width: 10,
+          height: 10,
           borderRadius: 9999,
           background: dotColor,
-          boxShadow: `0 0 10px ${dotColor}, 0 0 20px ${dotColor}, 0 0 40px ${color}`,
-          filter: "saturate(1.2)",
+          boxShadow: `0 0 6px ${dotColor}, 0 0 14px ${color}`,
+          filter: "none",
           transition: "opacity 180ms ease-out, transform 40ms linear",
           opacity: 0,
           left: 0,
